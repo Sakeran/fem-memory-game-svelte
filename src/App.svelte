@@ -1,6 +1,8 @@
 <script lang="ts">
+import ComponentsLibrary from "./lib/ComponentsLibrary.svelte";
+
 </script>
 
 <main>
-  <p class="text-2xl">fem-memory-game-svelte</p>
+  <ComponentsLibrary />
 </main>
