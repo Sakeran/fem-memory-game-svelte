@@ -25,6 +25,8 @@ module.exports = {
       sm: "0.9375rem",
       xs: "0.875rem",
       xxs: "0.8125re,",
+
+      token: ["var(--token-fs, 3.5rem)", 1],
     },
     colors: {
       white: "hsl(0,0%,100%)",
@@ -45,7 +47,11 @@ module.exports = {
         900: "hsl(203, 25%, 90%)",
       },
     },
-    extend: {},
+    extend: {
+      width: {
+        "token-icon": "var(--token-icon-size, 50%)",
+      },
+    },
   },
   plugins: [],
 };

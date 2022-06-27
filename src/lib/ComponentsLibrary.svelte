@@ -1,5 +1,6 @@
 <script>
   import Icon from "./Icon.svelte";
+  import Token from "./Token.svelte";
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
@@ -25,5 +26,19 @@
     <Icon iconIndex={16} />
     <Icon iconIndex={17} />
     <Icon iconIndex={18} />
+  </div>
+
+  <h3 class="text-8 mt-8 mb-4">Tokens</h3>
+  <div class="flex justify-around items-center">
+      <div class="w-[7.375rem] aspect-square">
+        <div style:--token-fs={"3.5rem"}>
+            <Token />
+        </div>
+      </div>
+      <div class="w-[5.125rem] aspect-square">
+        <div style:--token-fs={"2.75rem"}>
+            <Token />
+        </div>
+      </div>
   </div>
 </div>
