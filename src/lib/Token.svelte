@@ -1,39 +1,30 @@
 <script lang="ts">
   import { expoOut } from "svelte/easing";
   import { tweened } from "svelte/motion";
-  import { useMachine, useSelector } from "@xstate/svelte";
 
   import Icon from "./Icon.svelte";
-  import { tokenMachine } from "../machines/tokenMachine";
 
-  export let tokenId: string;
+  // export let tokenId: string;
   export let value: number;
   export let useIcon: boolean;
   export let selectable: boolean;
 
-  const { service, send } = useMachine(tokenMachine, {
-    context: { value, id: tokenId },
-  });
-
-  const idx = useSelector(service, (state) => state.context.value);
-  const isHidden = useSelector(service, (state) => state.matches("Hidden"));
-  const isMatched = useSelector(service, (state) => state.matches("Matched"));
-
   const matchScale = tweened(0, { easing: expoOut });
-  $: matchScale.set($isMatched ? 1 : 0); // temp
+  $: matchScale.set(false ? 1 : 0); // temp
 
   const tokenRotation = tweened(180, { easing: expoOut });
 
   function handleClick(e) {
     e.preventDefault();
-    if (!selectable && $isHidden) return;
-    send({ type: "tokenClick", ...service.state.context });
+    if (!selectable || !false) return; // stub
+
+    tokenRotation.set($tokenRotation + 180);
   }
 </script>
 
 <div
   on:click={handleClick}
-  class:cursor-pointer={selectable && $isHidden}
+  class:cursor-pointer={selectable && false}
   class="relative aspect-square rounded-round grid place-items-center text-white text-token origin-center"
   style:--token-match-scale={$matchScale}
   style:--token-rotate={`${$tokenRotation}deg`}
@@ -54,10 +45,10 @@
     <div class="z-10 absolute inset-0 grid place-items-center">
       {#if useIcon}
         <div class="w-token-icon">
-          <Icon iconIndex={$idx} />
+          <Icon iconIndex={value} />
         </div>
       {:else}
-        {$idx + 1}
+        {value + 1}
       {/if}
     </div>
   </div>
