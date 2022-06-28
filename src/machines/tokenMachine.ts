@@ -2,7 +2,7 @@ import { createModel } from "xstate/lib/model";
 
 const tokenModel = createModel({
   value: 0,
-  icon: false,
+  id: "token",
 });
 
 export const tokenMachine =

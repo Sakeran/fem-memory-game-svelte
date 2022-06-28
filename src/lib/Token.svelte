@@ -2,17 +2,18 @@
   import { expoOut } from "svelte/easing";
   import { tweened } from "svelte/motion";
   import { useMachine, useSelector } from "@xstate/svelte";
-  import { tokenMachine } from "../machines/tokenMachine";
-  import Icon from "./Icon.svelte";
-  import { onMount } from "svelte";
-  import { log } from "xstate/lib/actions";
 
-  // Temp Machine Instance
-  const { state, service } = useMachine(tokenMachine, {
-    context: { value: 0, icon: true },
+  import Icon from "./Icon.svelte";
+  import { tokenMachine } from "../machines/tokenMachine";
+
+  export let tokenId: string;
+  export let value: number;
+  export let useIcon: boolean;
+
+  const { service } = useMachine(tokenMachine, {
+    context: { value, id: tokenId },
   });
 
-  const useIcon = useSelector(service, (state) => state.context.icon);
   const idx = useSelector(service, (state) => state.context.value);
   const isMatched = useSelector(service, (state) => state.matches("Matched"));
   const isSelectable = useSelector(service, (state) =>
@@ -27,13 +28,13 @@
   function handleClick(e) {
     e.preventDefault();
     if (!$isSelectable) return;
-    service.send({ type: "CLICK" });
+    console.log("Clicked token");
   }
 </script>
 
 <div
   on:click={handleClick}
-  class:cursor-pointer={$isSelectable}
+  class:cursor-pointer={!$isSelectable}
   class="relative aspect-square rounded-round grid place-items-center text-white text-token origin-center"
   style:--token-match-scale={$matchScale}
   style:--token-rotate={`${$tokenRotation}deg`}
@@ -52,7 +53,7 @@
 
     <!-- Icon/Number -->
     <div class="z-10 absolute inset-0 grid place-items-center">
-      {#if $useIcon}
+      {#if useIcon}
         <div class="w-token-icon">
           <Icon iconIndex={$idx} />
         </div>
