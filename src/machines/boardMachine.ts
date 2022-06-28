@@ -1,5 +1,8 @@
 import { assign } from "xstate";
+import { send } from "xstate/lib/actions";
 import { createModel } from "xstate/lib/model";
+
+import { eventBusService } from "../lib/EventBus";
 
 export const boardModel = createModel({
   size: 4 as 4 | 6,
@@ -8,29 +11,36 @@ export const boardModel = createModel({
 });
 
 export const boardMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QCED2BDAThAsugxgBYCWAdmAHQCSpxALgMSKgAOqs9xqpzIAHogC0AJgCMANgoBmYcICcUxQAZ5AVikAWKQBoQATyEbJE1UoDswjQA4rUq0tFyAvk91osuAiXIUAKgFdMUgYAJQBRAGUAeQAZADUwgH1fAFUQgDleNg46Lh4kfiEzKQphM1FrcTlbUStTM10DBGEShSMNaqkzJXEZJVUXNwxsPCIyShC4VAAbADcwAKCGdLCAdWS0zILszm5eAQRBVTMKDRULOWFxcRa7YUbEUVkKMzrysw0zOQ-hY5dXECkVAQOC8dwjLzjai0OhZdi7fKgA4ibrSVTiKwmJQ9DRiDQPQ6iUSqCj9Y79THE8x1QYgcGeMY+RaIkA7XJ7ArIsRKCgYuRKDqqKzCKzfBr6RByF6-VRCpRSCqaFS0+mjbwTKZzBaBFlsvL7SWSZR1DQSfrCAUE0QnLRGeotVSWJRyDQq4YM9VwnL6zlCeQaNEYrE4vEEwS1Kyk2XdKziCrC0RSf5OIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QCED2BDAThAsugxgBYCWAdmAHQCSpxALgMQDKAKgIIBKLioADqrHrFUpHiAAeiALQA2AEwUADHICMMgBwBWLQGY5AThkAWTQBoQAT2kmK6mQHYdRvZp3qDdgL6fzaLLgIScgoWAFdMUgYOAFEmAHkAGQA1aIB9FgBVDgA5MX5BOmFRJAlpeSVVDW1XA2MzS0QVRQojGU19exVNOU1lHU17GW9fDGw8IjJKMIiGOlQAazBSAGEAG2J8ebyBIRExSQQVLopenR0VdXU3bpV7eqsEKSMFfSdFHQ7FeTuB4ZA-MaBSYUDhwVCrABuYGmkWy0QA6uksrkSvldsVQAdZAplGotLpaiZzA9tC02oZFJojOp3nd7N4fCBSKgIHAxACAhNgjR6NsCkV9tIepoKPp2nJFEZnDp7HIZG1idJ7PYKDoHGr9Ld3IomvTGRzxkEpuEMSA0YU9iUDkcdCd9Ip1Cp7fLLiYjIqEEZ9EpycYLt85Zo-gagcFQbBwVCYXz0YLHnIjM19IYZMmdd1k5p7ohnhQZHp5GKE3J3F59aNOUaYxbTVi5PZvWL9BKpWdZfLs48us01Y5Wq91MqswzPEA */
   boardModel.createMachine(
     {
-      tsTypes: {} as import("./boardMachine.typegen").Typegen0,
       context: boardModel.initialContext,
+      tsTypes: {} as import("./boardMachine.typegen").Typegen0,
       initial: "Init",
+      invoke: {
+        id: "eventBus",
+        src: "eventBus",
+      },
       states: {
         Init: {
           entry: "initBoard",
-          always: {
-            target: "Turn",
+          on: {
+            START: {
+              target: "Turn",
+            },
           },
         },
         Turn: {
-          entry: "enableClicks",
           on: {
             RESOLVE_TURN: {
               target: "ResolveTurn",
             },
+            tokenClick: {
+              actions: "tokenClick",
+            },
           },
         },
         ResolveTurn: {
-          entry: "disableClicks",
           on: {
             NEW_TURN: {
               target: "Turn",
@@ -41,6 +51,9 @@ export const boardMachine =
       id: "BoardMachine",
     },
     {
+      services: {
+        eventBus: eventBusService("tokenClick"),
+      },
       actions: {
         initBoard: assign({
           tokens: (context) => {
@@ -56,11 +69,8 @@ export const boardMachine =
             return res;
           },
         }),
-        enableClicks: () => {
-          // stub
-        },
-        disableClicks: () => {
-          // stub
+        tokenClick: (context, event) => {
+          console.log("Board: token clicked");
         },
       },
     }

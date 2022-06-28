@@ -9,16 +9,15 @@
   export let tokenId: string;
   export let value: number;
   export let useIcon: boolean;
+  export let selectable: boolean;
 
-  const { service } = useMachine(tokenMachine, {
+  const { service, send } = useMachine(tokenMachine, {
     context: { value, id: tokenId },
   });
 
   const idx = useSelector(service, (state) => state.context.value);
+  const isHidden = useSelector(service, (state) => state.matches("Hidden"));
   const isMatched = useSelector(service, (state) => state.matches("Matched"));
-  const isSelectable = useSelector(service, (state) =>
-    state.matches("Selectable")
-  );
 
   const matchScale = tweened(0, { easing: expoOut });
   $: matchScale.set($isMatched ? 1 : 0); // temp
@@ -27,14 +26,14 @@
 
   function handleClick(e) {
     e.preventDefault();
-    if (!$isSelectable) return;
-    console.log("Clicked token");
+    if (!selectable && $isHidden) return;
+    send({ type: "tokenClick", ...service.state.context });
   }
 </script>
 
 <div
   on:click={handleClick}
-  class:cursor-pointer={!$isSelectable}
+  class:cursor-pointer={selectable && $isHidden}
   class="relative aspect-square rounded-round grid place-items-center text-white text-token origin-center"
   style:--token-match-scale={$matchScale}
   style:--token-rotate={`${$tokenRotation}deg`}
