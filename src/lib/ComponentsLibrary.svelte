@@ -3,9 +3,9 @@
   import Token from "./Token.svelte";
   import TokenBoard from "./TokenBoard.svelte";
   import PrimaryButton from "./PrimaryButton.svelte";
-  import MenuButton from "./MenuButton.svelte";
   import BigButton from "./BigButton.svelte";
-import SecondaryButton from "./SecondaryButton.svelte";
+  import SecondaryButton from "./SecondaryButton.svelte";
+  import MenuRadio from "./MenuRadio.svelte";
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
@@ -53,14 +53,22 @@ import SecondaryButton from "./SecondaryButton.svelte";
     <TokenBoard />
   </div> -->
 
-  <h3 class="text-8 mt-8 mb-4">Buttons</h3>
+  <!-- <h3 class="text-8 mt-8 mb-4">Buttons</h3>
   <div class="flex gap-4">
-    <MenuButton selected={true}>Numbers</MenuButton>
-    <MenuButton selected={false}>Icons</MenuButton>
     <PrimaryButton>Restart</PrimaryButton>
     <SecondaryButton>New Game</SecondaryButton>
   </div>
   <div class="max-w-lg py-4">
     <BigButton>Start Game</BigButton>
+  </div> -->
+
+  <h3 class="text-8 mt-8 mb-4">Menu Radio</h3>
+  <div class="space-y-8">
+    <MenuRadio
+      title="Select Theme"
+      options={["Numbers", "Icons"]}
+      on:radioInput={(v) => console.log(v.detail)}
+    />
+    <MenuRadio title="Numbers of Players" options={["1", "2", "3", "4"]} />
   </div>
 </div>

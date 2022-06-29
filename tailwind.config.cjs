@@ -29,6 +29,7 @@ module.exports = {
       token: ["var(--token-fs, 3.5rem)", 1],
     },
     colors: {
+      transparent: "transparent",
       white: "hsl(0,0%,100%)",
       gray: {
         900: "hsl(0,0%,95%)",
