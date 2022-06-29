@@ -6,6 +6,7 @@
   import BigButton from "./BigButton.svelte";
   import SecondaryButton from "./SecondaryButton.svelte";
   import MenuRadio from "./MenuRadio.svelte";
+import SinglePlayerStatus from "./SinglePlayerStatus.svelte";
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
@@ -62,13 +63,17 @@
     <BigButton>Start Game</BigButton>
   </div> -->
 
-  <h3 class="text-8 mt-8 mb-4">Menu Radio</h3>
+  <!-- <h3 class="text-8 mt-8 mb-4">Menu Radio</h3>
   <div class="space-y-8">
     <MenuRadio
-      title="Select Theme"
-      options={["Numbers", "Icons"]}
-      on:radioInput={(v) => console.log(v.detail)}
+    title="Select Theme"
+    options={["Numbers", "Icons"]}
+    on:radioInput={(v) => console.log(v.detail)}
     />
     <MenuRadio title="Numbers of Players" options={["1", "2", "3", "4"]} />
-  </div>
+  </div> -->
+  
+  <h3 class="text-8 mt-8 mb-4">Single Player Status</h3>
+  <SinglePlayerStatus />
+
 </div>
