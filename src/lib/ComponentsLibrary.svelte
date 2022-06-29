@@ -6,7 +6,8 @@
   import BigButton from "./BigButton.svelte";
   import SecondaryButton from "./SecondaryButton.svelte";
   import MenuRadio from "./MenuRadio.svelte";
-import SinglePlayerStatus from "./SinglePlayerStatus.svelte";
+  import SinglePlayerStatus from "./SinglePlayerStatus.svelte";
+  import MultiPlayerStatus from "./MultiPlayerStatus.svelte";
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
@@ -72,8 +73,10 @@ import SinglePlayerStatus from "./SinglePlayerStatus.svelte";
     />
     <MenuRadio title="Numbers of Players" options={["1", "2", "3", "4"]} />
   </div> -->
-  
-  <h3 class="text-8 mt-8 mb-4">Single Player Status</h3>
-  <SinglePlayerStatus />
 
+  <!-- <h3 class="text-8 mt-8 mb-4">Single Player Status</h3>
+  <SinglePlayerStatus /> -->
+
+  <h3 class="text-8 mt-8 mb-4">Multi Player Status</h3>
+  <MultiPlayerStatus />
 </div>

@@ -24,7 +24,7 @@ module.exports = {
       4: "1rem",
       sm: "0.9375rem",
       xs: "0.875rem",
-      xxs: "0.8125re,",
+      xxs: "0.8125rem,",
 
       token: ["var(--token-fs, 3.5rem)", 1],
     },
