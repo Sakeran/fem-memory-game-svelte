@@ -2,10 +2,17 @@
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import { slide, fade } from "svelte/transition";
+  import { getContext } from "svelte";
+  import type { EventBus } from "./Events";
 
   export let playerId: number;
 
-  let activeTurn = true;
+  let activeTurn = false;
+
+  const events: EventBus = getContext("eventBus");
+  events.on("setActivePlayer", (id) => {
+    activeTurn = id === playerId;
+  });
 
   let tailOffset = tweened(activeTurn ? 1 : -0.414213, {
     duration: 400,

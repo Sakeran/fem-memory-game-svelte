@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "./Icon.svelte";
   import Token from "./Token.svelte";
   import TokenBoard from "./TokenBoard.svelte";
@@ -8,6 +8,10 @@
   import MenuRadio from "./MenuRadio.svelte";
   import SinglePlayerStatus from "./SinglePlayerStatus.svelte";
   import MultiPlayerStatus from "./MultiPlayerStatus.svelte";
+  import { getContext } from "svelte";
+  import type { EventBus } from "./Events";
+
+  const events: EventBus = getContext("eventBus");
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
