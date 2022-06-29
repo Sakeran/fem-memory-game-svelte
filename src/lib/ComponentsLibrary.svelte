@@ -2,6 +2,10 @@
   import Icon from "./Icon.svelte";
   import Token from "./Token.svelte";
   import TokenBoard from "./TokenBoard.svelte";
+  import PrimaryButton from "./PrimaryButton.svelte";
+  import MenuButton from "./MenuButton.svelte";
+  import BigButton from "./BigButton.svelte";
+import SecondaryButton from "./SecondaryButton.svelte";
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
@@ -43,9 +47,20 @@
     </div>
   </div> -->
 
-  <h3 class="text-8 mt-8 mb-4">Token Grid</h3>
-
+  <!-- <h3 class="text-8 mt-8 mb-4">Token Grid</h3>
+  
   <div class="max-w-[572px]">
     <TokenBoard />
+  </div> -->
+
+  <h3 class="text-8 mt-8 mb-4">Buttons</h3>
+  <div class="flex gap-4">
+    <MenuButton selected={true}>Numbers</MenuButton>
+    <MenuButton selected={false}>Icons</MenuButton>
+    <PrimaryButton>Restart</PrimaryButton>
+    <SecondaryButton>New Game</SecondaryButton>
+  </div>
+  <div class="max-w-lg py-4">
+    <BigButton>Start Game</BigButton>
   </div>
 </div>
