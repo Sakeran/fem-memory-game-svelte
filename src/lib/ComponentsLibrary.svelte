@@ -10,6 +10,7 @@
   import MultiPlayerStatus from "./MultiPlayerStatus.svelte";
   import { getContext } from "svelte";
   import type { EventBus } from "./Events";
+  import ResultsEntry from "./ResultsEntry.svelte";
 
   const events: EventBus = getContext("eventBus");
 </script>
@@ -81,6 +82,12 @@
   <!-- <h3 class="text-8 mt-8 mb-4">Single Player Status</h3>
   <SinglePlayerStatus /> -->
 
-  <h3 class="text-8 mt-8 mb-4">Multi Player Status</h3>
-  <MultiPlayerStatus />
+  <!-- <h3 class="text-8 mt-8 mb-4">Multi Player Status</h3>
+  <MultiPlayerStatus /> -->
+
+  <h3 class="text-8 mt-8 mb-4">ResultsEntry</h3>
+  <div class="space-y-4">
+    <ResultsEntry heading="Time Elapsed" value="1:53" />
+    <ResultsEntry heading="Player 3 (Winner!)" value="6 Pairs" highlight />
+  </div>
 </div>
