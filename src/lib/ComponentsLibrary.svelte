@@ -1,7 +1,7 @@
 <script>
   import Icon from "./Icon.svelte";
   import Token from "./Token.svelte";
-import TokenBoard from "./TokenBoard.svelte";
+  import TokenBoard from "./TokenBoard.svelte";
 </script>
 
 <h2 class="text-14 font-bold tracking-wide">Components Library</h2>
@@ -33,19 +33,19 @@ import TokenBoard from "./TokenBoard.svelte";
   <div class="flex justify-around items-center">
     <div class="w-[7.375rem] aspect-square">
       <div style:--token-fs={"3.5rem"}>
-        <Token />
+        <Token selectable={true} useIcon={true} value={3} />
       </div>
     </div>
     <div class="w-[5.125rem] aspect-square">
       <div style:--token-fs={"2.75rem"}>
-        <Token />
+        <Token selectable={true} useIcon={true} value={3} />
       </div>
     </div>
   </div> -->
 
   <h3 class="text-8 mt-8 mb-4">Token Grid</h3>
-  
-  <div>
+
+  <div class="max-w-[572px]">
     <TokenBoard />
   </div>
 </div>

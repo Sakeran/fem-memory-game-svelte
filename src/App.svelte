@@ -1,6 +1,10 @@
 <script lang="ts">
-import ComponentsLibrary from "./lib/ComponentsLibrary.svelte";
+  import { EventBus } from "./lib/Events";
 
+  import ComponentsLibrary from "./lib/ComponentsLibrary.svelte";
+  import { setContext } from "svelte";
+
+  setContext("eventBus", new EventBus());
 </script>
 
 <main>
