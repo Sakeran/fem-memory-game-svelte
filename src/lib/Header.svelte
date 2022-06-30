@@ -1,6 +1,9 @@
 <script>
+  import { getEventBusContext } from "./Events";
   import PrimaryButton from "./PrimaryButton.svelte";
   import SecondaryButton from "./SecondaryButton.svelte";
+
+  const events = getEventBusContext();
 </script>
 
 <div
@@ -13,7 +16,9 @@
 
     <nav>
       <div class="md:hidden">
-        <PrimaryButton>Menu</PrimaryButton>
+        <PrimaryButton on:click={() => events.dispatch("showMobileMenu")}
+          >Menu</PrimaryButton
+        >
       </div>
       <div class="hidden md:flex md:gap-4">
         <PrimaryButton>Restart</PrimaryButton>

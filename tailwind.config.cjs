@@ -32,6 +32,7 @@ module.exports = {
     colors: {
       transparent: "transparent",
       white: "hsl(0,0%,100%)",
+      black: "hsl(0,0%,0%)",
       gray: {
         900: "hsl(0,0%,95%)",
         1000: "hsl(0,0%,95%)",

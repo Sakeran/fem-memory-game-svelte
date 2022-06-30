@@ -1,4 +1,4 @@
-import { onDestroy } from "svelte";
+import { getContext, onDestroy } from "svelte";
 
 type EventCallback = (data?: any) => void;
 
@@ -26,4 +26,8 @@ export class EventBus {
       cb(data);
     }
   }
+}
+
+export function getEventBusContext(key = "eventBus") {
+  return getContext(key) as EventBus;
 }
