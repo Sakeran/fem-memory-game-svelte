@@ -16,6 +16,7 @@ module.exports = {
       14: "3.5rem",
       12: "3rem",
       11: "2.75rem",
+      10: "2.5rem",
       8: "2rem",
       6.125: "1.625rem",
       6: "1.5rem",
@@ -51,6 +52,13 @@ module.exports = {
     extend: {
       width: {
         "token-icon": "var(--token-icon-size, 50%)",
+      },
+      maxWidth: {
+        container: "69.375rem",
+      },
+      screens: {
+        md: "40em",
+        lg: "69em",
       },
     },
   },
