@@ -1,16 +1,20 @@
 <script lang="ts">
-  import MultiPlayerStatusIndicator from "./MultiPlayerStatusIndicator.svelte";
+  import { getContext } from "svelte";
+  import type { Writable } from "svelte/store";
 
-  export let playerCount: 2 | 3 | 4 = 4;
+  import MultiPlayerStatusIndicator from "./MultiPlayerStatusIndicator.svelte";
+  import type { GameOptions } from "./stores/gameOptions";
+
+  const gameOptions: Writable<GameOptions> = getContext("gameOptions");
 </script>
 
-<aside class="flex gap-6 md:gap-3 lg:gap-[1.875rem]">
+<aside class="flex gap-6 md:gap-3 lg:gap-[1.875rem] justify-center">
   <MultiPlayerStatusIndicator playerId={0} />
   <MultiPlayerStatusIndicator playerId={1} />
-  {#if playerCount > 2}
+  {#if $gameOptions.playerCount > 2}
     <MultiPlayerStatusIndicator playerId={2} />
   {/if}
-  {#if playerCount > 3}
+  {#if $gameOptions.playerCount > 3}
     <MultiPlayerStatusIndicator playerId={3} />
   {/if}
 </aside>

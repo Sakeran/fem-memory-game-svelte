@@ -21,7 +21,7 @@
   $: tailOffset.set(activeTurn ? 1 : -0.414213); // temp
 </script>
 
-<div class="basis-full">
+<div class="basis-64">
   <div
     class:active-turn={activeTurn}
     class="relative bg-blue-900 py-[0.625rem] md:p-4 lg:p-6 rounded-sm md:rounded-md flex flex-col lg:flex-row lg:justify-between lg:items-center text-center md:text-left motion-safe:transition-colors motion-safe:duration-700"

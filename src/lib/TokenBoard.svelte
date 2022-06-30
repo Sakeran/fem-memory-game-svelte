@@ -1,9 +1,13 @@
 <script lang="ts">
   import Token from "./Token.svelte";
 
-  import { gameOptions } from "./stores/gameOptions";
   import { getContext, onMount } from "svelte";
+  import type { GameOptions } from "./stores/gameOptions";
   import type { EventBus } from "./Events";
+  import type { Writable } from "svelte/store";
+
+  const gameOptions: Writable<GameOptions> = getContext("gameOptions");
+  const events: EventBus = getContext("eventBus");
 
   type TokenData = { value: number };
 
@@ -30,12 +34,13 @@
 
   let classes: string;
   if ($gameOptions.size == 4) {
-    classes = "grid grid-cols-4 gap-3 md:gap-5 [--token-fs:2.5rem] md:[--token-fs:3.5rem]";
+    classes =
+      "grid grid-cols-4 gap-3 md:gap-5 [--token-fs:2.5rem] md:[--token-fs:3.5rem]";
   } else {
-    classes = "grid grid-cols-6 gap-2 md:gap-4 [--token-fs:1.5rem] md:[--token-fs:2.75rem]";
+    classes =
+      "grid grid-cols-6 gap-2 md:gap-4 [--token-fs:1.5rem] md:[--token-fs:2.75rem]";
   }
 
-  const events: EventBus = getContext("eventBus");
   events.on("tokenClick", (clickDetail) => {
     selectedTokens.push(clickDetail);
     if (selectedTokens.length > 1) {
