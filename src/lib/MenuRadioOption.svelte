@@ -19,7 +19,7 @@
   for={optId}>{option}</label
 >
 
-<style>
+<style lang="postcss">
   :global(:focus-within) label {
     @apply ring-blue-800;
   }
@@ -29,7 +29,8 @@
   input:checked + label {
     @apply bg-blue-100;
   }
-  input:not(:checked) + label:hover {
+  input:not(:checked) + label:hover,
+  input:not(:checked):focus-visible + label {
     @apply bg-blue-500;
   }
 </style>

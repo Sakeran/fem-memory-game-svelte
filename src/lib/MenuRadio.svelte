@@ -28,7 +28,7 @@
   </div>
 </fieldset>
 
-<style>
+<style lang="postcss">
   fieldset:focus-within legend {
     @apply text-blue-200;
   }
