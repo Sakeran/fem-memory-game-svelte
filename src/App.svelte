@@ -7,6 +7,7 @@
   import { initOptions } from "./lib/stores/gameOptions";
   import MobileMenu from "./lib/MobileMenu.svelte";
   import OptionsMenu from "./lib/OptionsMenu.svelte";
+import ResultsModal from "./lib/ResultsModal.svelte";
 
   const events = new EventBus();
   const gameOptions = initOptions();
@@ -18,7 +19,9 @@
   events.on("showMobileMenu", () => (showMobileMenu = true));
   events.on("closeMobileMenu", () => (showMobileMenu = false));
 
-  let showOptionsMenu = true;
+  let showOptionsMenu = false;
+
+  let showResultsModal = true;
 </script>
 
 <div class="mb-20 md:mb-[7.5rem] lg:mb-[5.25rem]">
@@ -33,6 +36,11 @@
 <!-- Options Menu -->
 {#if showOptionsMenu}
   <OptionsMenu />
+{/if}
+
+<!-- Results Modal -->
+{#if showResultsModal}
+  <ResultsModal />
 {/if}
 
 <!-- Game Board -->
