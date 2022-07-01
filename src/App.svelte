@@ -36,6 +36,12 @@
     startNewGame();
   });
 
+  events.on("openOptionsMenu", () => {
+    gameState = "Options";
+  });
+
+  // Functions
+
   function startNewGame() {
     gameState = "Game";
     tick().then(() => {

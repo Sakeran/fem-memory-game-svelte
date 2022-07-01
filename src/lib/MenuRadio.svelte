@@ -7,6 +7,7 @@
 
   export let title: string;
   export let options: [string, ...string[]];
+  export let activeIndex: number = 0;
 
   let groupId = "mg-" + title.replace(" ", "-");
 </script>
@@ -21,7 +22,7 @@
       <MenuRadioOption
         {groupId}
         {option}
-        selected={idx == 0}
+        selected={idx == activeIndex}
         on:input={() => dispatch("radioInput", option)}
       />
     {/each}

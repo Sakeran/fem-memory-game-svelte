@@ -1,10 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  
+  import { fly } from "svelte/transition";
+
   import { getEventBusContext } from "./Events";
   import MenuRadio from "./MenuRadio.svelte";
+  import { getGameOptions } from "./stores/gameOptions";
 
   let events = getEventBusContext();
+  let gameOptions = getGameOptions();
 
   let modal: HTMLDivElement;
   let wrapStart: HTMLDivElement;
@@ -60,9 +63,19 @@
 
 <svelte:window on:keydown={wrap} />
 
-<div class=" z-30 fixed inset-0 bg-blue-100" />
+<div
+  transition:fly={{ x: -window.innerWidth, duration: 300, opacity: 1 }}
+  class=" z-30 fixed inset-0 bg-blue-100"
+/>
 
-<div class="z-40 fixed inset-0">
+<div
+  transition:fly={{
+    x: -window.innerWidth,
+    duration: 300,
+    opacity: 1,
+  }}
+  class="z-40 fixed inset-0"
+>
   <div
     class="px-6 mt-20"
     role="dialog"
@@ -81,12 +94,34 @@
           class="absolute"
           aria-hidden="true"
         />
-        <MenuRadio title="Select Theme" options={["Numbers", "Icons"]} />
-        <MenuRadio title="Numbers of Players" options={["1", "2", "3", "4"]} />
-        <MenuRadio title="Grid Size" options={["4x4", "6x6"]} />
+        <MenuRadio
+          title="Select Theme"
+          activeIndex={$gameOptions.icons ? 1 : 0}
+          options={["Numbers", "Icons"]}
+          on:radioInput={(e) => ($gameOptions.icons = e.detail == "Icons")}
+        />
+        <MenuRadio
+          title="Numbers of Players"
+          options={["1", "2", "3", "4"]}
+          activeIndex={$gameOptions.playerCount - 1}
+          on:radioInput={(e) => {
+            let v = parseInt(e.detail);
+            if (v == 1 || v == 2 || v == 3 || v == 4) {
+              $gameOptions.playerCount = v;
+            }
+          }}
+        />
+        <MenuRadio
+          title="Grid Size"
+          activeIndex={$gameOptions.size == 4 ? 0 : 1}
+          options={["4x4", "6x6"]}
+          on:radioInput={(e) =>
+            ($gameOptions.size = e.detail === "4x4" ? 4 : 6)}
+        />
         <div class="pt-2">
           <button
             class="w-full text-4.125 md:text-8 bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] md:leading-[2.187] rounded-full"
+            on:click={() => events.dispatch("restartGame")}
           >
             Start Game
           </button>

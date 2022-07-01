@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setContext } from "svelte";
+  import { onDestroy, setContext } from "svelte";
 
   import { getEventBusContext } from "./Events";
   import { initSinglePlayerGameState } from "./stores/singlePlayerGameState";
@@ -11,6 +11,11 @@
 
   // Single Player Game Events
   let timerHandle;
+  onDestroy(() => {
+    if (timerHandle !== undefined) {
+      clearInterval(timerHandle);
+    }
+  });
 
   events.on("startTimer", () => {
     timerHandle = setInterval(() => {
@@ -32,6 +37,10 @@
     if ($gameState.timerStarted) {
       events.dispatch("startTimer");
     }
+  });
+
+  events.on("openOptionsMenu", () => {
+    events.dispatch("pauseTimer");
   });
 
   events.on("tokenClick", () => {

@@ -30,6 +30,7 @@
 
         <button
           class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.6] rounded-full px-6"
+          on:click={() => events.dispatch("openOptionsMenu")}
         >
           New Game
         </button>
