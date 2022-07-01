@@ -64,14 +64,16 @@
 
 <div
   class="z-30 fixed inset-0 bg-black/50"
-  transition:fade={{ duration: 150 }}
+  in:fade={{ duration: 150, delay: 500 }}
+  out:fade={{ duration: 150 }}
 />
 
 <div
   class="z-40 fixed inset-0 grid place-items-center px-6 pointer-events-none"
 >
   <div
-    transition:scale
+    in:scale={{ delay: 500 }}
+    out:scale
     role="dialog"
     aria-modal="true"
     aria-labelledby="game-results-heading"
