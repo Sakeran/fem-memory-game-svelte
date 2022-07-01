@@ -77,6 +77,7 @@
     <!-- svelte-ignore a11y-autofocus -->
     <button
       class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      on:click={() => events.dispatch("restartGame")}
       autofocus>Restart</button
     >
     <button

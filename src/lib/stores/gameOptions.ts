@@ -1,4 +1,5 @@
-import { writable } from "svelte/store";
+import { getContext } from "svelte";
+import { Writable, writable } from "svelte/store";
 
 export interface GameOptions {
   size: 4 | 6;
@@ -7,12 +8,15 @@ export interface GameOptions {
 }
 
 const initialOptions: GameOptions = {
-  size: 6,
+  size: 4,
   icons: false,
-  playerCount: 3,
+  playerCount: 1,
 };
 
 export const initOptions = (customOptions?: Partial<GameOptions>) =>
   writable(
     Object.assign({}, initialOptions, (customOptions || {}) as GameOptions)
   );
+
+export const getGameOptions = () =>
+  getContext("gameOptions") as Writable<GameOptions>;

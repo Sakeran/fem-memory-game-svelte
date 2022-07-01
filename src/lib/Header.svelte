@@ -23,6 +23,7 @@
       <div class="hidden md:flex md:gap-4 text-5">
         <button
           class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.6] rounded-full px-7"
+          on:click={() => events.dispatch("restartGame")}
         >
           Restart
         </button>

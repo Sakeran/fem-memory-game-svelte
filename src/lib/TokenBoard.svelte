@@ -32,6 +32,8 @@
   let state: "PlayerTurn" | "ResolvingTurn" = "PlayerTurn";
   let selectedTokens: (TokenData & { animation: Promise<void> })[] = [];
 
+  let matchCount = 0;
+
   let classes: string;
   if ($gameOptions.size == 4) {
     classes =
@@ -48,7 +50,11 @@
 
       Promise.all(selectedTokens.map((st) => st.animation)).then(() => {
         if (selectedTokens[0].value == selectedTokens[1].value) {
+          matchCount += 1;
           events.dispatch("matchedTokens", selectedTokens[0].value);
+          if (matchCount == ($gameOptions.size * $gameOptions.size) / 2) {
+            events.dispatch("allTokensMatched");
+          }
         }
         events.dispatch("endedTurn");
         selectedTokens = [];

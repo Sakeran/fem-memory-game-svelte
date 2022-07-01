@@ -3,9 +3,31 @@
   import { scale, fade } from "svelte/transition";
 
   import type { EventBus } from "./Events";
+  import { formatTime } from "./helpers/formatTime";
   import ResultsEntry from "./ResultsEntry.svelte";
+  import { getGameOptions } from "./stores/gameOptions";
+  import { getSinglePlayerGameState } from "./stores/singlePlayerGameState";
 
   const events: EventBus = getContext("eventBus");
+
+  const gameOptions = getGameOptions();
+  const singlePlayerGameState = getSinglePlayerGameState();
+
+  let resultsHeading;
+  let resultsDesc;
+  let resultsEntries;
+
+  if ($gameOptions.playerCount === 1) {
+    resultsHeading = "You did it!";
+    resultsDesc = "Game over! Here's how you got on...";
+
+    resultsEntries = [
+      ["Time Elapsed", formatTime($singlePlayerGameState.timeInSeconds)],
+      ["Moves Taken", $singlePlayerGameState.movesMade],
+    ];
+  } else {
+    // TODO
+  }
 
   let modal: HTMLDivElement;
 
@@ -62,21 +84,20 @@
         id="game-results-heading"
         class="text-6 md:text-12 text-center text-blue-100 leading-tight"
       >
-        Player 3 Wins!
+        {resultsHeading}
       </div>
       <div
         id="game-results-desc"
         class="text-xs md:text-4.125 text-center text-blue-400 leading-[1.2]"
       >
-        Game over! Here are the results...
+        {resultsDesc}
       </div>
     </div>
 
     <div class="flex flex-col gap-2 md:gap-4">
-      <ResultsEntry heading="Player 3 (Winner!)" value="8 Pairs" highlight />
-      <ResultsEntry heading="Player 1 " value="4 Pairs" />
-      <ResultsEntry heading="Player 2" value="3 Pairs" />
-      <ResultsEntry heading="Player 4" value="1 Pairs" />
+      {#each resultsEntries as entry}
+        <ResultsEntry heading={entry[0]} value={entry[1]} highlight={false} />
+      {/each}
     </div>
 
     <div
@@ -85,6 +106,7 @@
       <!-- svelte-ignore a11y-autofocus -->
       <button
         autofocus
+        on:click={() => events.dispatch("restartGame")}
         class="basis-full bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
         >Restart</button
       >
