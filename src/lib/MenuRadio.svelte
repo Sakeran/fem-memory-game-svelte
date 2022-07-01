@@ -11,12 +11,12 @@
   let groupId = "mg-" + title.replace(" ", "-");
 </script>
 
-<fieldset class="flex flex-col gap-3">
+<fieldset class="flex flex-col">
   <legend class="text-sm text-blue-400 md:text-5 motion-safe:transition-colors"
     >{title}</legend
   >
 
-  <div class="pt-3 md:pt-4 flex gap-3 md:gap-[1.875rem]">
+  <div class="pt-3 md:pt-4 flex gap-3 md:gap-[1.875rem] md:text-[1.625rem]">
     {#each options as option, idx}
       <MenuRadioOption
         {groupId}

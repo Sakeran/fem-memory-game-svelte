@@ -1,8 +1,5 @@
 <script>
   import { getEventBusContext } from "./Events";
-  import PrimaryButton from "./PrimaryButton.svelte";
-  import SecondaryButton from "./SecondaryButton.svelte";
-
   const events = getEventBusContext();
 </script>
 
@@ -16,13 +13,25 @@
 
     <nav>
       <div class="md:hidden">
-        <PrimaryButton on:click={() => events.dispatch("showMobileMenu")}
-          >Menu</PrimaryButton
+        <button
+          class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.5] rounded-full px-[1.125rem]"
+          on:click={() => events.dispatch("showMobileMenu")}
         >
+          Menu
+        </button>
       </div>
-      <div class="hidden md:flex md:gap-4">
-        <PrimaryButton>Restart</PrimaryButton>
-        <SecondaryButton>New Game</SecondaryButton>
+      <div class="hidden md:flex md:gap-4 text-5">
+        <button
+          class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.6] rounded-full px-7"
+        >
+          Restart
+        </button>
+
+        <button
+          class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.6] rounded-full px-6"
+        >
+          New Game
+        </button>
       </div>
     </nav>
   </div>

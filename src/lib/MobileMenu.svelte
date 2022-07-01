@@ -2,9 +2,6 @@
   import { getContext, onDestroy } from "svelte";
   import { scale, fade } from "svelte/transition";
 
-  import PrimaryButton from "./PrimaryButton.svelte";
-  import SecondaryButton from "./SecondaryButton.svelte";
-
   import type { EventBus } from "./Events";
 
   const events: EventBus = getContext("eventBus");
@@ -74,11 +71,21 @@
     role="dialog"
     aria-modal="true"
     aria-label="Game Menu"
-    class="z-50 w-full bg-white rounded-md flex flex-col gap-4 p-6 pointer-events-auto"
+    class="z-50 w-full bg-white text-4.125 rounded-md flex flex-col gap-4 p-6 pointer-events-auto"
     bind:this={modal}
   >
-    <PrimaryButton autofocus>Restart</PrimaryButton>
-    <SecondaryButton>New Game</SecondaryButton>
-    <SecondaryButton on:click={close}>Resume Game</SecondaryButton>
+    <!-- svelte-ignore a11y-autofocus -->
+    <button
+      class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      autofocus>Restart</button
+    >
+    <button
+      class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      >New Game</button
+    >
+    <button
+      class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      on:click={close}>Resume Game</button
+    >
   </div>
 </div>

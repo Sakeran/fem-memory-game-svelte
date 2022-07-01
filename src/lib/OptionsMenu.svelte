@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
-  import BigButton from "./BigButton.svelte";
+  
   import { getEventBusContext } from "./Events";
   import MenuRadio from "./MenuRadio.svelte";
 
@@ -70,7 +69,7 @@
     aria-modal="true"
     aria-label="Memory Game Setup"
   >
-    <div class="text-center text-white text-8 mb-11">memory</div>
+    <div class="text-center text-white text-8 md:text-10 mb-11">memory</div>
     <div
       class="bg-white p-6 md:p-14 rounded-sm md:rounded-lg max-w-[40.875rem] mx-auto"
       bind:this={modal}
@@ -86,7 +85,11 @@
         <MenuRadio title="Numbers of Players" options={["1", "2", "3", "4"]} />
         <MenuRadio title="Grid Size" options={["4x4", "6x6"]} />
         <div class="pt-2">
-          <BigButton on:click{newGame}>Start Game</BigButton>
+          <button
+            class="w-full text-4.125 md:text-8 bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] md:leading-[2.187] rounded-full"
+          >
+            Start Game
+          </button>
           <div
             bind:this={wrapEnd}
             tabindex="0"

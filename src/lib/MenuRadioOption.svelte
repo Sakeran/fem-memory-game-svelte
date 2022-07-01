@@ -15,7 +15,7 @@
   on:input
 />
 <label
-  class="bg-blue-800 ring-transparent ring-0 ring-offset-2 inline-block cursor-pointer py-[0.625rem] px-4 rounded-full text-white text-center text-4 md:text-[1.625rem] motion-safe:transition-colors basis-full select-none"
+  class="bg-blue-800 basis-full select-none cursor-pointer text-white rounded-full text-center leading-[2.5] md:leading-[2] ring-transparent ring-0 ring-offset-2 motion-safe:transition-colors"
   for={optId}>{option}</label
 >
 
