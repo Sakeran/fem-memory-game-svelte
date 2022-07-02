@@ -2,17 +2,13 @@
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import { slide, fade } from "svelte/transition";
-  import { getContext } from "svelte";
-  import type { EventBus } from "./Events";
+  import { getMultiplayerGameState } from "./stores/multiplayerGameState";
 
   export let playerId: number;
 
+  const gameState = getMultiplayerGameState();
   let activeTurn = false;
-
-  const events: EventBus = getContext("eventBus");
-  events.on("setActivePlayer", (id) => {
-    activeTurn = id === playerId;
-  });
+  $: activeTurn = $gameState.activePlayer == playerId;
 
   let tailOffset = tweened(activeTurn ? 1 : -0.414213, {
     duration: 400,
@@ -40,7 +36,7 @@
     >
     <span
       class="text-blue-200 text-6 lg:text-8 motion-safe:transition-colors motion-safe:duration-500 "
-      >{playerId * 10}</span
+      >{$gameState.playerScores[playerId]}</span
     >
   </div>
 
@@ -55,7 +51,7 @@
   {/if}
 </div>
 
-<style>
+<style lang="postcss">
   .active-turn {
     @apply bg-yellow-800;
   }

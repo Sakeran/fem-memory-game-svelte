@@ -1,32 +1,62 @@
 <script lang="ts">
   import { getContext, onDestroy } from "svelte";
+  import { identity } from "svelte/internal";
   import { scale, fade } from "svelte/transition";
 
   import type { EventBus } from "./Events";
   import { formatTime } from "./helpers/formatTime";
   import ResultsEntry from "./ResultsEntry.svelte";
   import { getGameOptions } from "./stores/gameOptions";
+  import { getMultiplayerGameState } from "./stores/multiplayerGameState";
   import { getSinglePlayerGameState } from "./stores/singlePlayerGameState";
 
   const events: EventBus = getContext("eventBus");
 
   const gameOptions = getGameOptions();
-  const singlePlayerGameState = getSinglePlayerGameState();
+  let spGameState: ReturnType<typeof getSinglePlayerGameState>;
+  let mpGameState: ReturnType<typeof getMultiplayerGameState>;
 
   let resultsHeading;
   let resultsDesc;
   let resultsEntries;
 
   if ($gameOptions.playerCount === 1) {
+    spGameState = getSinglePlayerGameState();
     resultsHeading = "You did it!";
     resultsDesc = "Game over! Here's how you got on...";
 
     resultsEntries = [
-      ["Time Elapsed", formatTime($singlePlayerGameState.timeInSeconds)],
-      ["Moves Taken", $singlePlayerGameState.movesMade],
+      ["Time Elapsed", formatTime($spGameState.timeInSeconds)],
+      ["Moves Taken", $spGameState.movesMade],
     ];
   } else {
-    // TODO
+    mpGameState = getMultiplayerGameState();
+
+    const scores = Object.entries($mpGameState.playerScores)
+      .map(([id, score]) => ({ playerId: parseInt(id) + 1, score }))
+
+      .filter((player) => player.playerId <= $gameOptions.playerCount)
+      .sort(({ score }, { score: score2 }) => score2 - score);
+
+    const highScore = scores[0].score;
+
+    const highScoreCount = scores.reduce(
+      (acc, el) => (el.score == highScore ? acc + 1 : acc),
+      0
+    );
+
+    resultsHeading =
+      highScoreCount > 1 ? "It's a tie!" : `Player ${scores[0].playerId} Wins!`;
+
+    resultsDesc = "Game over! Here are the results...";
+
+    resultsEntries = scores.map((player) => [
+      `Player ${player.playerId}${
+        player.score == highScore ? " (Winner!)" : ""
+      }`,
+      `${player.score} Pairs`,
+      player.score == highScore,
+    ]);
   }
 
   let modal: HTMLDivElement;
@@ -98,7 +128,11 @@
 
     <div class="flex flex-col gap-2 md:gap-4">
       {#each resultsEntries as entry}
-        <ResultsEntry heading={entry[0]} value={entry[1]} highlight={false} />
+        <ResultsEntry
+          heading={entry[0]}
+          value={entry[1]}
+          highlight={entry[2] || false}
+        />
       {/each}
     </div>
 

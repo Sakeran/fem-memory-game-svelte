@@ -9,6 +9,7 @@
   import OptionsMenu from "./lib/OptionsMenu.svelte";
   import ResultsModal from "./lib/ResultsModal.svelte";
   import SinglePlayerGameProvider from "./lib/SinglePlayerGameProvider.svelte";
+  import MultiplayerGameProvider from "./lib/MultiplayerGameProvider.svelte";
 
   type GAME_STATE = "Game" | "Menu" | "Options" | "Results";
 
@@ -65,7 +66,11 @@
 {/if}
 
 {#key gameId}
-  <SinglePlayerGameProvider>
+  <svelte:component
+    this={$gameOptions.playerCount == 1
+      ? SinglePlayerGameProvider
+      : MultiplayerGameProvider}
+  >
     <!-- Results Modal -->
     {#if gameState == "Results"}
       <ResultsModal />
@@ -75,5 +80,5 @@
     <main class="mb-8">
       <GameBoard />
     </main>
-  </SinglePlayerGameProvider>
+  </svelte:component>
 {/key}
