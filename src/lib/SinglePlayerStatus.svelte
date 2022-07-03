@@ -1,6 +1,4 @@
 <script lang="ts">
-import { setContext } from "svelte";
-
   import { formatTime } from "./helpers/formatTime";
 
   import { getSinglePlayerGameState } from "./stores/singlePlayerGameState";

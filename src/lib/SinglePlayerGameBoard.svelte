@@ -2,10 +2,14 @@
   import { onDestroy, setContext } from "svelte";
 
   import { getEventBusContext } from "./Events";
+  import GameBoard from "./GameBoard.svelte";
+  import ResultsModal from "./ResultsModal.svelte";
   import { initSinglePlayerGameState } from "./stores/singlePlayerGameState";
 
   const events = getEventBusContext();
   const gameState = initSinglePlayerGameState();
+
+  export let showResults: boolean;
 
   setContext("singlePlayerGameState", gameState);
 
@@ -60,4 +64,12 @@
   });
 </script>
 
-<slot />
+<!-- Results Modal -->
+{#if showResults}
+  <ResultsModal />
+{/if}
+
+<!-- Game Board -->
+<main class="mb-8">
+  <GameBoard />
+</main>

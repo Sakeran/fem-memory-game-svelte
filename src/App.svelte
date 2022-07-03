@@ -3,13 +3,11 @@
 
   import { setContext, tick } from "svelte";
   import Header from "./lib/Header.svelte";
-  import GameBoard from "./lib/GameBoard.svelte";
   import { initOptions } from "./lib/stores/gameOptions";
   import MobileMenu from "./lib/MobileMenu.svelte";
   import OptionsMenu from "./lib/OptionsMenu.svelte";
-  import ResultsModal from "./lib/ResultsModal.svelte";
-  import SinglePlayerGameProvider from "./lib/SinglePlayerGameProvider.svelte";
-  import MultiplayerGameProvider from "./lib/MultiplayerGameProvider.svelte";
+  import SinglePlayerGameBoard from "./lib/SinglePlayerGameBoard.svelte";
+  import MultiplayerGameBoard from "./lib/MultiplayerGameBoard.svelte";
 
   type GAME_STATE = "Game" | "Menu" | "Options" | "Results";
 
@@ -65,20 +63,13 @@
   <OptionsMenu />
 {/if}
 
-{#key gameId}
-  <svelte:component
-    this={$gameOptions.playerCount == 1
-      ? SinglePlayerGameProvider
-      : MultiplayerGameProvider}
-  >
-    <!-- Results Modal -->
-    {#if gameState == "Results"}
-      <ResultsModal />
-    {/if}
-
-    <!-- Game Board -->
-    <main class="mb-8">
-      <GameBoard />
-    </main>
-  </svelte:component>
-{/key}
+{#if gameState !== "Options"}
+  {#key gameId}
+    <svelte:component
+      this={$gameOptions.playerCount == 1
+        ? SinglePlayerGameBoard
+        : MultiplayerGameBoard}
+      showResults={gameState == "Results"}
+    />
+  {/key}
+{/if}
