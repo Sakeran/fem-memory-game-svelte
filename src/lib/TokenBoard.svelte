@@ -11,7 +11,7 @@
 
   type TokenData = { value: number };
 
-  let tokens: TokenData[] = [];
+  let tokens: TokenData[][] = [];
 
   function initTokens() {
     const newTokens: TokenData[] = [];
@@ -26,7 +26,14 @@
       newTokens[i] = tmp;
     }
 
-    tokens = newTokens;
+    let tokenRows: TokenData[][] = [];
+    for (let i = 0; i < $gameOptions.size; i++) {
+      tokenRows.push(
+        newTokens.slice($gameOptions.size * i, $gameOptions.size * (i + 1))
+      );
+    }
+
+    tokens = tokenRows;
   }
 
   let state: "PlayerTurn" | "ResolvingTurn" = "PlayerTurn";
@@ -68,12 +75,23 @@
   onMount(() => initTokens());
 </script>
 
-<div class={classes}>
-  {#each tokens as token}
-    <Token
-      value={token.value}
-      selectable={state == "PlayerTurn"}
-      useIcon={$gameOptions.icons}
-    />
+<div
+  class={classes}
+  role="grid"
+  aria-colcount={$gameOptions.size}
+  aria-rowcount={$gameOptions.size}
+>
+  {#each tokens as row, ridx}
+    <div class="contents" role="row">
+      {#each row as token, cidx}
+        <Token
+          value={token.value}
+          selectable={state == "PlayerTurn"}
+          useIcon={$gameOptions.icons}
+          column={cidx}
+          row={ridx}
+        />
+      {/each}
+    </div>
   {/each}
 </div>

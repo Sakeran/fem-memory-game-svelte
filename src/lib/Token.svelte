@@ -12,6 +12,8 @@
   export let selectable: boolean;
   export let value: number;
   export let useIcon: boolean;
+  export let column: number;
+  export let row: number;
 
   let state: "Hidden" | "Selected" | "Matched" = "Hidden";
 
@@ -64,45 +66,56 @@
 </script>
 
 <div
-  on:click={handleClick}
-  class:cursor-pointer={clickable}
-  class="token-container relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
-  style:--token-match-scale={$matchScale}
-  style:--token-rotate={`${$tokenRotation}deg`}
+  class="grid"
+  role="cell"
+  aria-colindex={column + 1}
+  aria-rowindex={row + 1}
 >
-  <!-- Front Face -->
-  <div class="token-ff absolute inset-0">
-    <!-- Background -->
-    <div
-      class="absolute bg-blue-800 inset-0 rounded-round z-0 pointer-events-none"
-    />
+  <button
+    on:click={handleClick}
+    tabindex="0"
+    aria-label={`Row ${row + 1} Column ${column + 1}`}
+    disabled={!clickable}
+    class:cursor-pointer={clickable}
+    class="token-container relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
+    style:--token-match-scale={$matchScale}
+    style:--token-rotate={`${$tokenRotation}deg`}
+  >
+    <!-- Front Face -->
+    <div class="token-ff absolute inset-0">
+      <!-- Background -->
+      <div
+        class="absolute bg-blue-800 inset-0 rounded-round z-0 pointer-events-none"
+      />
 
-    <!-- Matched Background -->
-    <div
-      class="absolute bg-yellow-800 inset-0 rounded-round z-0 pointer-events-none scale-[var(--token-match-scale)]"
-    />
+      <!-- Matched Background -->
+      <div
+        class="absolute bg-yellow-800 inset-0 rounded-round z-0 pointer-events-none scale-[var(--token-match-scale)]"
+      />
 
-    <!-- Icon/Number -->
-    <div
-      class="z-10 absolute inset-0 grid place-items-center pointer-events-none"
-    >
-      {#if useIcon}
-        <div>
-          <Icon iconIndex={value} />
-        </div>
-      {:else}
-        {value + 1}
-      {/if}
+      <!-- Icon/Number -->
+      <div
+        aria-hidden="true"
+        class="z-10 absolute inset-0 grid place-items-center pointer-events-none"
+      >
+        {#if useIcon}
+          <div>
+            <Icon iconIndex={value} />
+          </div>
+        {:else}
+          {value + 1}
+        {/if}
+      </div>
     </div>
-  </div>
 
-  <!-- Back Face -->
-  <div
-    class="token-bf z-10 absolute inset-0 bg-blue-100 rounded-round pointer-events-none transition-colors duration-75"
-  />
+    <!-- Back Face -->
+    <div
+      class="token-bf z-10 absolute inset-0 bg-blue-100 rounded-round pointer-events-none transition-colors duration-75"
+    />
+  </button>
 </div>
 
-<style>
+<style lang="postcss">
   .token-ff {
     transform: rotateY(calc(var(--token-rotate, 0deg)));
     backface-visibility: hidden;
