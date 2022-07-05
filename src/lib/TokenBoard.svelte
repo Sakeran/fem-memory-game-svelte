@@ -42,12 +42,15 @@
   let matchCount = 0;
 
   let classes: string;
+  let rowClasses: string;
   if ($gameOptions.size == 4) {
+    rowClasses = "grid grid-cols-4 gap-3 md:gap-5";
     classes =
-      "grid grid-cols-4 gap-3 md:gap-5 [--token-fs:2.5rem] md:[--token-fs:3.5rem]";
+      "flex flex-col gap-3 md:gap-5 [--token-fs:2.5rem] md:[--token-fs:3.5rem]";
   } else {
+    rowClasses = "grid grid-cols-6 gap-2 md:gap-4";
     classes =
-      "grid grid-cols-6 gap-2 md:gap-4 [--token-fs:1.5rem] md:[--token-fs:2.75rem]";
+      "flex flex-col gap-2 md:gap-4 [--token-fs:1.5rem] md:[--token-fs:2.75rem]";
   }
 
   function getToken(row: number, column: number) {
@@ -231,7 +234,7 @@
   aria-rowcount={$gameOptions.size}
 >
   {#each tokens as row, ridx}
-    <div class="contents" role="row">
+    <div role="row" class={rowClasses}>
       {#each row as token, cidx}
         <Token
           value={token.value}
