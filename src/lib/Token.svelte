@@ -60,8 +60,65 @@
 
     const animationPromise = select();
 
-    events.dispatch("tokenClick", { value, animation: animationPromise });
+    events.dispatch("tokenClick", {
+      value,
+      animation: animationPromise,
+    });
     state = "Selected";
+
+    // Focus on next token if triggered by a keyboard.
+    if (e.detail === 0) {
+      events.dispatch("FocusNextToken", { row, column });
+    }
+  }
+
+  function handleKeydown(e: KeyboardEvent) {
+    switch (e.key) {
+      case "Left":
+      case "ArrowLeft":
+        e.preventDefault();
+        events.dispatch("MoveFocusLeft", { row, column });
+        return;
+      case "Right":
+      case "ArrowRight":
+        e.preventDefault();
+        events.dispatch("MoveFocusRight", { row, column });
+        return;
+      case "Up":
+      case "ArrowUp":
+        e.preventDefault();
+        events.dispatch("MoveFocusUp", { row, column });
+        return;
+      case "PageUp":
+        e.preventDefault();
+        events.dispatch("MoveFocusToPreviousRow", { row, column });
+        return;
+      case "Down":
+      case "ArrowDown":
+        e.preventDefault();
+        events.dispatch("MoveFocusDown", { row, column });
+        return;
+      case "PageDown":
+        e.preventDefault();
+        events.dispatch("MoveFocusToNextRow", { row, column });
+        return;
+      case "Home":
+        e.preventDefault();
+        if (e.ctrlKey) {
+          events.dispatch("MoveFocusToGridStart");
+          return;
+        }
+        events.dispatch("MoveFocusToRowStart", { row, column });
+        return;
+      case "End":
+        e.preventDefault();
+        if (e.ctrlKey) {
+          events.dispatch("MoveFocusToGridEnd");
+          return;
+        }
+        events.dispatch("MoveFocusToRowEnd", { row, column });
+        return;
+    }
   }
 </script>
 
@@ -72,7 +129,10 @@
   aria-rowindex={row + 1}
 >
   <button
+    id={`token-${row}-${column}`}
     on:click={handleClick}
+    on:focus={(e) => events.dispatch("tokenFocus", e)}
+    on:keydown={handleKeydown}
     tabindex="0"
     aria-label={`Row ${row + 1} Column ${column + 1}`}
     disabled={!clickable}
@@ -127,7 +187,7 @@
   }
 
   .token-container:hover > .token-bf,
-  .token-container:focus > .token-bf {
+  .token-container:focus-visible > .token-bf {
     @apply bg-blue-500;
   }
 </style>

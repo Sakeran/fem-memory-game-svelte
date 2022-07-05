@@ -50,8 +50,16 @@
       "grid grid-cols-6 gap-2 md:gap-4 [--token-fs:1.5rem] md:[--token-fs:2.75rem]";
   }
 
+  function getToken(row: number, column: number) {
+    const button = document.getElementById(`token-${row}-${column}`);
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    return button;
+  }
+
   events.on("tokenClick", (clickDetail) => {
     selectedTokens.push(clickDetail);
+
     if (selectedTokens.length > 1) {
       state = "ResolvingTurn";
 
@@ -70,6 +78,147 @@
         }, 50);
       });
     }
+  });
+
+  events.on("MoveFocusLeft", (coord) => {
+    let { row, column } = coord;
+
+    for (let cidx = column - 1; cidx >= 0; cidx--) {
+      const token = getToken(row, cidx);
+      if (!token.disabled) {
+        return token.focus();
+      }
+    }
+  });
+
+  events.on("MoveFocusRight", (coord) => {
+    let { row, column } = coord;
+
+    for (let cidx = column + 1; cidx < $gameOptions.size; cidx++) {
+      const token = getToken(row, cidx);
+      if (!token.disabled) {
+        return token.focus();
+      }
+    }
+  });
+
+  events.on("MoveFocusUp", (coord) => {
+    let { row, column } = coord;
+
+    for (let ridx = row - 1; ridx >= 0; ridx--) {
+      const token = getToken(ridx, column);
+      if (!token.disabled) {
+        return token.focus();
+      }
+    }
+  });
+
+  events.on("MoveFocusDown", (coord) => {
+    let { row, column } = coord;
+
+    for (let ridx = row + 1; ridx < $gameOptions.size; ridx++) {
+      const token = getToken(ridx, column);
+      if (!token.disabled) {
+        return token.focus();
+      }
+    }
+  });
+
+  events.on("MoveFocusToRowStart", (coord) => {
+    let { row } = coord;
+
+    for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
+      const token = getToken(row, cidx);
+      if (!token.disabled) {
+        return token.focus();
+      }
+    }
+  });
+
+  events.on("MoveFocusToRowEnd", (coord) => {
+    let { row } = coord;
+
+    for (let cidx = $gameOptions.size - 1; cidx >= 0; cidx--) {
+      const token = getToken(row, cidx);
+      if (!token.disabled) {
+        return token.focus();
+      }
+    }
+  });
+
+  events.on("MoveFocusToNextRow", (coord) => {
+    const { row } = coord;
+
+    for (let ridx = row + 1; ridx < $gameOptions.size; ridx++) {
+      for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
+        const token = getToken(ridx, cidx);
+        if (!token.disabled) {
+          return token.focus();
+        }
+      }
+    }
+  });
+
+  events.on("MoveFocusToPreviousRow", (coord) => {
+    const { row } = coord;
+
+    for (let ridx = row - 1; ridx >= 0; ridx--) {
+      for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
+        const token = getToken(ridx, cidx);
+        if (!token.disabled) {
+          return token.focus();
+        }
+      }
+    }
+  });
+
+  events.on("MoveFocusToGridStart", () => {
+    for (let ridx = 0; ridx < $gameOptions.size; ridx++) {
+      for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
+        const token = getToken(ridx, cidx);
+        if (!token.disabled) {
+          return token.focus();
+        }
+      }
+    }
+  });
+
+  events.on("MoveFocusToGridEnd", () => {
+    for (let ridx = $gameOptions.size - 1; ridx >= 0; ridx--) {
+      for (let cidx = $gameOptions.size - 1; cidx >= 0; cidx--) {
+        const token = getToken(ridx, cidx);
+        if (!token.disabled) {
+          return token.focus();
+        }
+      }
+    }
+  });
+
+  events.on("FocusNextToken", (coord) => {
+    const { row, column } = coord;
+
+    for (let ridx = row; ridx < $gameOptions.size; ridx++) {
+      for (
+        let cidx = ridx === row ? column + 1 : 0;
+        cidx < $gameOptions.size;
+        cidx++
+      ) {
+        const token = getToken(ridx, cidx);
+        if (!token.disabled) {
+          return token.focus();
+        }
+      }
+    }
+
+    // If we haven't found anything to focus on yet, start from beginning.
+    events.dispatch("MoveFocusToGridStart", coord);
+  });
+
+  events.on("FocusToken", (coord) => {
+    const token = getToken(coord.row, coord.column);
+    if (!token) return;
+
+    token.focus();
   });
 
   onMount(() => initTokens());
