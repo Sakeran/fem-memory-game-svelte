@@ -159,7 +159,7 @@
         class="z-10 absolute inset-0 grid place-items-center pointer-events-none"
       >
         {#if useIcon}
-          <div>
+          <div class="w-1/2">
             <Icon iconIndex={value} />
           </div>
         {:else}
