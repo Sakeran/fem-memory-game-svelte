@@ -135,9 +135,10 @@
     on:keydown={handleKeydown}
     tabindex="0"
     aria-label={`Row ${row + 1} Column ${column + 1}`}
-    disabled={!clickable}
+    disabled={state !== "Hidden"}
     class:cursor-pointer={clickable}
-    class="token-container relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
+    class:cursor-default={!clickable}
+    class="token-container outline-none relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
     style:--token-match-scale={$matchScale}
     style:--token-rotate={`${$tokenRotation}deg`}
   >
