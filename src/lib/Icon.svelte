@@ -19,24 +19,24 @@
   import Worm from "./icons/worm.svelte";
 
   const icons = [
-    Bugs,
-    Cat,
-    Cow,
-    Crow,
-    Dog,
-    Dragon,
-    Fish,
-    Frog,
-    Hippo,
-    Horse,
-    Dove,
-    Kiwi,
-    Locust,
-    Mosquito,
-    Otter,
-    Shrimp,
-    Spider,
-    Worm,
+    [Bugs, "bugs"],
+    [Cat, "cat"],
+    [Cow, "cow"],
+    [Crow, "crow"],
+    [Dog, "dog"],
+    [Dragon, "dragon"],
+    [Fish, "fish"],
+    [Frog, "frog"],
+    [Hippo, "hippo"],
+    [Horse, "horse"],
+    [Dove, "dove"],
+    [Kiwi, "kiwi"],
+    [Locust, "locust"],
+    [Mosquito, "mosquito"],
+    [Otter, "otter"],
+    [Shrimp, "shrimp"],
+    [Spider, "spider"],
+    [Worm, "worm"],
   ];
 
   function randomizeIcons() {
@@ -48,6 +48,12 @@
     }
   }
 
+  export function getIconName(idx: number) {
+    const entry = icons[idx];
+    if (!entry) return "";
+    return entry[1] as string;
+  }
+
   randomizeIcons();
 </script>
 
@@ -55,4 +61,4 @@
   export let iconIndex = 0;
 </script>
 
-<svelte:component this={icons[iconIndex]} />
+<svelte:component this={icons[iconIndex][0]} />

@@ -5,7 +5,7 @@
   import { tweened } from "svelte/motion";
   import type { EventBus } from "./Events";
 
-  import Icon from "./Icon.svelte";
+  import Icon, { getIconName } from "./Icon.svelte";
 
   const events: EventBus = getContext("eventBus");
 
@@ -16,6 +16,9 @@
   export let row: number;
 
   let state: "Hidden" | "Selected" | "Matched" = "Hidden";
+
+  // Used by screen readers / logs
+  let displayValue: string = useIcon ? getIconName(value) : (value + 1).toString();
 
   events.on("matchedTokens", (tokenValue) => {
     if (tokenValue == value) {
@@ -61,15 +64,13 @@
     const animationPromise = select();
 
     events.dispatch("tokenClick", {
+      row,
+      column,
       value,
+      displayValue,
       animation: animationPromise,
     });
     state = "Selected";
-
-    // Focus on next token if triggered by a keyboard.
-    if (e.detail === 0) {
-      events.dispatch("FocusNextToken", { row, column });
-    }
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -134,8 +135,9 @@
     on:focus={(e) => events.dispatch("tokenFocus", e)}
     on:keydown={handleKeydown}
     tabindex="0"
-    aria-label={`Row ${row + 1} Column ${column + 1}`}
-    disabled={state !== "Hidden"}
+    aria-label={`Row ${row + 1} Column ${column + 1}${
+      state !== "Hidden" ? ". Revealed value" + displayValue : ""
+    }`}
     class:cursor-pointer={clickable}
     class:cursor-default={!clickable}
     class="token-container outline-none relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
@@ -161,7 +163,7 @@
       >
         {#if useIcon}
           <div class="w-1/2">
-            <Icon iconIndex={value} />
+            <Icon iconIndex={value}/>
           </div>
         {:else}
           {value + 1}

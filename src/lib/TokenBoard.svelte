@@ -5,9 +5,12 @@
   import type { GameOptions } from "./stores/gameOptions";
   import type { EventBus } from "./Events";
   import type { Writable } from "svelte/store";
+  import { getMultiplayerGameState } from "./stores/multiplayerGameState";
 
   const gameOptions: Writable<GameOptions> = getContext("gameOptions");
   const events: EventBus = getContext("eventBus");
+
+  const mpState = getMultiplayerGameState();
 
   type TokenData = { value: number };
 
@@ -60,8 +63,31 @@
     return button;
   }
 
+  function logTokenSelection(clickDetail) {
+    let message = `Selected token ${clickDetail.displayValue} at row ${
+      clickDetail.row + 1
+    } column ${clickDetail.column + 1}`;
+    if ($gameOptions.playerCount > 1) {
+      if (!mpState) return;
+      message = `Player ${$mpState.activePlayer + 1} ` + message;
+    }
+
+    events.dispatch("logMessage", message);
+  }
+
+  function logMatched(clickDetail) {
+    if ($gameOptions.playerCount == 1) {
+      events.dispatch(
+        "logMessage",
+        `Selected and matched token ${clickDetail.displayValue}.`
+      );
+      return;
+    }
+  }
+
   events.on("tokenClick", (clickDetail) => {
     selectedTokens.push(clickDetail);
+    logTokenSelection(clickDetail);
 
     if (selectedTokens.length > 1) {
       state = "ResolvingTurn";
@@ -70,6 +96,7 @@
         if (selectedTokens[0].value == selectedTokens[1].value) {
           matchCount += 1;
           events.dispatch("matchedTokens", selectedTokens[0].value);
+          logMatched(clickDetail);
           if (matchCount == ($gameOptions.size * $gameOptions.size) / 2) {
             events.dispatch("allTokensMatched");
           }
@@ -85,143 +112,62 @@
 
   events.on("MoveFocusLeft", (coord) => {
     let { row, column } = coord;
-
-    for (let cidx = column - 1; cidx >= 0; cidx--) {
-      const token = getToken(row, cidx);
-      if (!token.disabled) {
-        return token.focus();
-      }
-    }
+    const token = getToken(row, column - 1);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusRight", (coord) => {
     let { row, column } = coord;
-
-    for (let cidx = column + 1; cidx < $gameOptions.size; cidx++) {
-      const token = getToken(row, cidx);
-      if (!token.disabled) {
-        return token.focus();
-      }
-    }
+    const token = getToken(row, column + 1);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusUp", (coord) => {
     let { row, column } = coord;
-
-    for (let ridx = row - 1; ridx >= 0; ridx--) {
-      const token = getToken(ridx, column);
-      if (!token.disabled) {
-        return token.focus();
-      }
-    }
+    const token = getToken(row - 1, column);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusDown", (coord) => {
     let { row, column } = coord;
-
-    for (let ridx = row + 1; ridx < $gameOptions.size; ridx++) {
-      const token = getToken(ridx, column);
-      if (!token.disabled) {
-        return token.focus();
-      }
-    }
+    const token = getToken(row + 1, column);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusToRowStart", (coord) => {
     let { row } = coord;
-
-    for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
-      const token = getToken(row, cidx);
-      if (!token.disabled) {
-        return token.focus();
-      }
-    }
+    const token = getToken(row, 0);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusToRowEnd", (coord) => {
     let { row } = coord;
-
-    for (let cidx = $gameOptions.size - 1; cidx >= 0; cidx--) {
-      const token = getToken(row, cidx);
-      if (!token.disabled) {
-        return token.focus();
-      }
-    }
+    const token = getToken(row, $gameOptions.size - 1);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusToNextRow", (coord) => {
     const { row } = coord;
 
-    for (let ridx = row + 1; ridx < $gameOptions.size; ridx++) {
-      for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
-        const token = getToken(ridx, cidx);
-        if (!token.disabled) {
-          return token.focus();
-        }
-      }
-    }
+    const token = getToken(row + 1, 0);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusToPreviousRow", (coord) => {
     const { row } = coord;
 
-    for (let ridx = row - 1; ridx >= 0; ridx--) {
-      for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
-        const token = getToken(ridx, cidx);
-        if (!token.disabled) {
-          return token.focus();
-        }
-      }
-    }
+    const token = getToken(row - 1, 0);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusToGridStart", () => {
-    for (let ridx = 0; ridx < $gameOptions.size; ridx++) {
-      for (let cidx = 0; cidx < $gameOptions.size; cidx++) {
-        const token = getToken(ridx, cidx);
-        if (!token.disabled) {
-          return token.focus();
-        }
-      }
-    }
+    const token = getToken(0, 0);
+    if (token) token.focus();
   });
 
   events.on("MoveFocusToGridEnd", () => {
-    for (let ridx = $gameOptions.size - 1; ridx >= 0; ridx--) {
-      for (let cidx = $gameOptions.size - 1; cidx >= 0; cidx--) {
-        const token = getToken(ridx, cidx);
-        if (!token.disabled) {
-          return token.focus();
-        }
-      }
-    }
-  });
-
-  events.on("FocusNextToken", (coord) => {
-    const { row, column } = coord;
-
-    for (let ridx = row; ridx < $gameOptions.size; ridx++) {
-      for (
-        let cidx = ridx === row ? column + 1 : 0;
-        cidx < $gameOptions.size;
-        cidx++
-      ) {
-        const token = getToken(ridx, cidx);
-        if (!token.disabled) {
-          return token.focus();
-        }
-      }
-    }
-
-    // If we haven't found anything to focus on yet, start from beginning.
-    events.dispatch("MoveFocusToGridStart", coord);
-  });
-
-  events.on("FocusToken", (coord) => {
-    const token = getToken(coord.row, coord.column);
-    if (!token) return;
-
-    token.focus();
+    const token = getToken($gameOptions.size - 1, $gameOptions.size - 1);
+    if (token) token.focus();
   });
 
   onMount(() => initTokens());

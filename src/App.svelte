@@ -8,6 +8,7 @@
   import OptionsMenu from "./lib/OptionsMenu.svelte";
   import SinglePlayerGameBoard from "./lib/SinglePlayerGameBoard.svelte";
   import MultiplayerGameBoard from "./lib/MultiplayerGameBoard.svelte";
+  import Log from "./lib/Log.svelte";
 
   type GAME_STATE = "Game" | "Menu" | "Options" | "Results";
 
@@ -73,3 +74,5 @@
     />
   {/key}
 {/if}
+
+<Log />
