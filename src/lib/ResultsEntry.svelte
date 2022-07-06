@@ -2,9 +2,9 @@
   export let heading: string;
   export let value: string;
   export let highlight: boolean = false;
+  export let srValue: string = undefined;
 </script>
 
- 
 <div
   class:bg-blue-100={highlight}
   class:bg-blue-900={!highlight}
@@ -22,6 +22,9 @@
     class:text-blue-100={!highlight}
     class="text-5 leading-tight md:text-8"
   >
-    {value}
+    {#if srValue}
+      <span class="sr-only">{srValue}</span>
+    {/if}
+    <span aria-hidden={!!srValue}>{value}</span>
   </div>
 </div>

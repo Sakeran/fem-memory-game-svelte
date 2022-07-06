@@ -1,14 +1,20 @@
 <script lang="ts">
-  import { getContext, onDestroy } from "svelte";
-  import { identity } from "svelte/internal";
+  import { getContext } from "svelte";
   import { scale, fade } from "svelte/transition";
 
   import type { EventBus } from "./Events";
-  import { formatTime } from "./helpers/formatTime";
+  import { formatScreenReaderTime, formatTime } from "./helpers/formatTime";
   import ResultsEntry from "./ResultsEntry.svelte";
   import { getGameOptions } from "./stores/gameOptions";
   import { getMultiplayerGameState } from "./stores/multiplayerGameState";
   import { getSinglePlayerGameState } from "./stores/singlePlayerGameState";
+
+  type ResultEntryDefinition = {
+    label: string;
+    value: string;
+    srValue?: string;
+    highlight?: boolean;
+  };
 
   const events: EventBus = getContext("eventBus");
 
@@ -18,28 +24,36 @@
 
   let resultsHeading;
   let resultsDesc;
-  let resultsEntries;
+  let resultsEntries: ResultEntryDefinition[] = [];
 
   if ($gameOptions.playerCount === 1) {
     spGameState = getSinglePlayerGameState();
     resultsHeading = "You did it!";
     resultsDesc = "Game over! Here's how you got on...";
 
-    resultsEntries = [
-      ["Time Elapsed", formatTime($spGameState.timeInSeconds)],
-      ["Moves Taken", $spGameState.movesMade],
-    ];
+    resultsEntries = [];
+    
+    resultsEntries.push({
+      label: "Time Elapsed",
+      value: formatTime($spGameState.timeInSeconds),
+      srValue: formatScreenReaderTime($spGameState.timeInSeconds),
+    });
+
+    resultsEntries.push({
+      label: "Moves Taken",
+      value: $spGameState.movesMade.toString(),
+    });
   } else {
     mpGameState = getMultiplayerGameState();
-
+    
     const scores = Object.entries($mpGameState.playerScores)
-      .map(([id, score]) => ({ playerId: parseInt(id) + 1, score }))
-
-      .filter((player) => player.playerId <= $gameOptions.playerCount)
-      .sort(({ score }, { score: score2 }) => score2 - score);
-
+    .map(([id, score]) => ({ playerId: parseInt(id) + 1, score }))
+    
+    .filter((player) => player.playerId <= $gameOptions.playerCount)
+    .sort(({ score }, { score: score2 }) => score2 - score);
+    
     const highScore = scores[0].score;
-
+    
     const highScoreCount = scores.reduce(
       (acc, el) => (el.score == highScore ? acc + 1 : acc),
       0
@@ -50,13 +64,13 @@
 
     resultsDesc = "Game over! Here are the results...";
 
-    resultsEntries = scores.map((player) => [
-      `Player ${player.playerId}${
+    resultsEntries = scores.map((player) => ({
+      label: `Player ${player.playerId}${
         player.score == highScore ? " (Winner!)" : ""
       }`,
-      `${player.score} Pairs`,
-      player.score == highScore,
-    ]);
+      value:`${player.score} Pairs`,
+      highlight: player.score == highScore
+    }));
   }
 
   let modal: HTMLDivElement;
@@ -129,9 +143,10 @@
     <div class="flex flex-col gap-2 md:gap-4">
       {#each resultsEntries as entry}
         <ResultsEntry
-          heading={entry[0]}
-          value={entry[1]}
-          highlight={entry[2] || false}
+          heading={entry.label}
+          value={entry.value}
+          highlight={entry.highlight}
+          srValue={entry.srValue}
         />
       {/each}
     </div>
