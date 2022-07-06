@@ -140,7 +140,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-2 md:gap-4">
+    <dl class="flex flex-col gap-2 md:gap-4">
       {#each resultsEntries as entry}
         <ResultsEntry
           heading={entry.label}
@@ -149,7 +149,7 @@
           srValue={entry.srValue}
         />
       {/each}
-    </div>
+    </dl>
 
     <div
       class="flex flex-col md:flex-row gap-4 md:gap-[0.875rem] md:pt-4 text-4.125 md:text-5"
