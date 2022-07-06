@@ -8,7 +8,7 @@ This is a solution to the [Memory game challenge on Frontend Mentor](https://www
 
 This is the hardest Frontend Mentor project I've worked on thus far, and I suspect it'll keep that distinction for a while to come, even as I look at some higher-difficulty projects. It took me nearly two months and two separate tech stacks to achieve a level of quality I could accept, and I'm still not particularly happy with the final product.
 
-A live version of the game can be found here.
+[A live version of the game can be found here](https://amorse-fem-memory.netlify.app/).
 
 This project merits a little explanation, so I've gone a little more in-depth about my experiences this time.
 
