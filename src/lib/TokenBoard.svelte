@@ -82,6 +82,12 @@
         `Selected and matched token ${clickDetail.displayValue}.`
       );
       return;
+    } else {
+      if (!mpState) return;
+      events.dispatch(
+        "logMessage",
+        `Player ${$mpState.activePlayer} selected and matched token ${clickDetail.displayValue}`
+      );
     }
   }
 
