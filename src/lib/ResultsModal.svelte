@@ -143,11 +143,11 @@
       <button
         autofocus
         on:click={() => events.dispatch("restartGame")}
-        class="basis-full bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+        class="basis-full bg-yellow-800 hover:bg-yellow-900 focus-visible:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
         >Restart</button
       >
       <button
-        class="basis-full bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+        class="basis-full bg-blue-900 hover:bg-blue-500 focus-visible:bg-blue-500 text-blue-200 hover:text-white focus-visible:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
         on:click={() => events.dispatch("openOptionsMenu")}
         >Setup New Game</button
       >

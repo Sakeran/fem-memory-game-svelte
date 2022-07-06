@@ -76,16 +76,16 @@
   >
     <!-- svelte-ignore a11y-autofocus -->
     <button
-      class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      class="bg-yellow-800 hover:bg-yellow-900 focus-visible:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] rounded-full"
       on:click={() => events.dispatch("restartGame")}
       autofocus>Restart</button
     >
     <button
-      class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      class="bg-blue-900 hover:bg-blue-500 focus-visible:bg-blue-500 text-blue-200 hover:text-white focus-visible:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
       on:click={() => events.dispatch("openOptionsMenu")}>New Game</button
     >
     <button
-      class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
+      class="bg-blue-900 hover:bg-blue-500 focus-visible:bg-blue-500 text-blue-200 hover:text-white focus-visible:text-white motion-safe:transition-colors leading-[2.7] rounded-full"
       on:click={close}>Resume Game</button
     >
   </div>

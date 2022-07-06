@@ -14,7 +14,7 @@
     <nav>
       <div class="md:hidden">
         <button
-          class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.5] rounded-full px-[1.125rem]"
+          class="bg-yellow-800 hover:bg-yellow-900 focus-visible:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.5] rounded-full px-[1.125rem]"
           on:click={() => events.dispatch("showMobileMenu")}
         >
           Menu
@@ -22,14 +22,14 @@
       </div>
       <div class="hidden md:flex md:gap-4 text-5">
         <button
-          class="bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.6] rounded-full px-7"
+          class="bg-yellow-800 hover:bg-yellow-900 focus-visible:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.6] rounded-full px-7"
           on:click={() => events.dispatch("restartGame")}
         >
           Restart
         </button>
 
         <button
-          class="bg-blue-900 hover:bg-blue-500 focus:bg-blue-500 text-blue-200 hover:text-white focus:text-white motion-safe:transition-colors leading-[2.6] rounded-full px-6"
+          class="bg-blue-900 hover:bg-blue-500 focus-visible:bg-blue-500 text-blue-200 hover:text-white focus-visible:text-white motion-safe:transition-colors leading-[2.6] rounded-full px-6"
           on:click={() => events.dispatch("openOptionsMenu")}
         >
           New Game

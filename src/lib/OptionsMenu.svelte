@@ -120,7 +120,7 @@
         />
         <div class="pt-2">
           <button
-            class="w-full text-4.125 md:text-8 bg-yellow-800 hover:bg-yellow-900 focus:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] md:leading-[2.187] rounded-full"
+            class="w-full text-4.125 md:text-8 bg-yellow-800 hover:bg-yellow-900 focus-visible:bg-yellow-900 text-white motion-safe:transition-colors leading-[2.7] md:leading-[2.187] rounded-full"
             on:click={() => events.dispatch("restartGame")}
           >
             Start Game
