@@ -3,6 +3,7 @@
   import { cubicOut } from "svelte/easing";
   import { slide, fade } from "svelte/transition";
   import { getMultiplayerGameState } from "./stores/multiplayerGameState";
+  import { reducedMotion } from "./helpers/reducedMotion";
 
   export let playerId: number;
 
@@ -11,7 +12,7 @@
   $: activeTurn = $gameState.activePlayer == playerId;
 
   let tailOffset = tweened(activeTurn ? 1 : -0.414213, {
-    duration: 400,
+    duration: reducedMotion() ? 0 : 400,
     easing: cubicOut,
   });
   $: tailOffset.set(activeTurn ? 1 : -0.414213); // temp

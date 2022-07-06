@@ -4,6 +4,7 @@
   import { expoOut } from "svelte/easing";
   import { tweened } from "svelte/motion";
   import type { EventBus } from "./Events";
+  import { reducedMotion } from "./helpers/reducedMotion";
 
   import Icon, { getIconName } from "./Icon.svelte";
 
@@ -18,7 +19,9 @@
   let state: "Hidden" | "Selected" | "Matched" = "Hidden";
 
   // Used by screen readers / logs
-  let displayValue: string = useIcon ? getIconName(value) : (value + 1).toString();
+  let displayValue: string = useIcon
+    ? getIconName(value)
+    : (value + 1).toString();
 
   events.on("matchedTokens", (tokenValue) => {
     if (tokenValue == value) {
@@ -34,14 +37,25 @@
   $: clickable = selectable && state === "Hidden";
 
   const matchScale = tweened(0, { easing: expoOut });
-  $: matchScale.set(state === "Matched" ? 1 : 0); // temp
+  $: matchScale.set(state === "Matched" ? 1 : 0, {
+    duration: reducedMotion() ? 0 : 400,
+  }); // temp
 
-  const tokenRotation = tweened(180, { easing: expoOut });
+  const tokenRotation = tweened(180, {
+    easing: expoOut,
+  });
 
   function hide() {
     if (state !== "Selected") return;
 
     state = "Hidden";
+
+    if (reducedMotion()) {
+      return tokenRotation
+        .set(180, { duration: 0 })
+        .then(() => new Promise((r) => setTimeout(r, 400)));
+    }
+
     return tokenRotation
       .set(0, { duration: 0 })
       .then(() => tokenRotation.set(180));
@@ -51,6 +65,12 @@
     if (state !== "Hidden") return;
 
     state = "Selected";
+
+    if (reducedMotion()) {
+      return tokenRotation
+        .set(0, { duration: 0 })
+        .then(() => new Promise((r) => setTimeout(r, 400)));
+    }
 
     return tokenRotation
       .set(180, { duration: 0 })
@@ -163,7 +183,7 @@
       >
         {#if useIcon}
           <div class="w-1/2">
-            <Icon iconIndex={value}/>
+            <Icon iconIndex={value} />
           </div>
         {:else}
           {value + 1}
@@ -173,7 +193,7 @@
 
     <!-- Back Face -->
     <div
-      class="token-bf z-10 absolute inset-0 bg-blue-100 rounded-round pointer-events-none transition-colors duration-75"
+      class="token-bf z-10 absolute inset-0 bg-blue-100 rounded-round pointer-events-none motion-safe:transition-colors motion-safe:duration-75"
     />
   </button>
 </div>
