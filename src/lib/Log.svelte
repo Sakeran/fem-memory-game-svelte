@@ -5,6 +5,10 @@
 
   const events: EventBus = getEventBusContext();
 
+  events.on("restartGame", () => {
+    messages = [];
+  })
+
   events.on("logMessage", (message) => {
     messages.push(message);
     messages = messages;
