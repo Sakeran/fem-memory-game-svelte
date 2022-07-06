@@ -3,14 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon-32x32.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FrontEndMentor - Memory Game</title>
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <div class="max-w-container p-6 box-content mx-auto mt-32 space-y-8">
+        <header>
+          <h1 class="text-6 text-blue-100 leading-tight md:text-10 text-center">
+            memory
+          </h1>
+        </header>
+        <p class="text-center text-5 text-blue-100 leading-tight md:text-10">
+          This game requires Javascript to play.
+        </p>
+        <p
+          class="text-center leading-snug md:text-5 max-w-prose mx-auto text-blue-200"
+        >
+          Sorry, but this web game is unable to function without Javascript.
+          Please enable it if you wish to play.
+        </p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
