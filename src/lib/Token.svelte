@@ -160,7 +160,7 @@
     }`}
     class:cursor-pointer={clickable}
     class:cursor-default={!clickable}
-    class="token-container outline-none relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
+    class="token-container outline-0 focus-visible:outline-1 outline-blue-100 relative aspect-square rounded-round grid place-items-center text-white text-token origin-center select-none"
     style:--token-match-scale={$matchScale}
     style:--token-rotate={`${$tokenRotation}deg`}
   >
@@ -199,6 +199,11 @@
 </div>
 
 <style lang="postcss">
+  button {
+    /* Addresses a visual glitch in Chrome. */
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .token-ff {
     transform: rotateY(calc(var(--token-rotate, 0deg)));
     backface-visibility: hidden;
